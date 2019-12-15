@@ -1,31 +1,31 @@
-import psutil
-import os
 import viewer
 import sys
+import render_elements
+
+
 v = None
 if len(sys.argv) > 1:
     v = viewer.Viewer(sys.argv[1])
-
-# os.listdir, os.path.getsize, os.remove, os.rmdir()
-# disks = psutil.disk_partitions()
-# free = psutil.disk_usage(disks[iterator].mountpoint).free / (1024 * 1024 * 1024)
-# total = psutil.disk_usage(disks[iterator].mountpoint).total / (1024 * 1024 * 1024)
-# used = psutil.disk_usage(disks[iterator].mountpoint).used / (1024 * 1024 * 1024)
-# ft = round(free / total * 100)
-# ut = round(used / total * 100)
 else:
-    print("write puth for directory!")
+    print("write puth to directory!")
     quit()
-print(f"Current position: {v.current_pos}")
+
 print(v.elements_in_current_position.__str__())
 while True:
+    print(f"Current position: {v.current_pos}")
     command = input()
+    if command == "quit":
+        quit()
     v.go_to_this(command)
-    v.get_disk_list(command)
-    # v.select_disk(command)
-    v.get_info_about_disk(command)
     v.sort_by_size(command)
     v.sort_by_time(command)
     v.sort_by_type(command)
-    if command == "quit":
-        quit()
+    r = render_elements.RenderAll(v.elements_in_current_position.el_list)
+    if command == "render":
+        r.render()
+    if command == "help":
+        print("Команда go_to_this puth сменит текущую директорию на директорию по абсолютному пути puth.\n" +
+              "Команда quit закончит выполнение программы\n" +
+              "Команда sort_by_time, sort_by_type, sort_by_size отсортирует" +
+              " файлы соответсвенно по времени, типу, размеру.\n" +
+              "Команда render отрисует текущий список элементов директории в его текущем состоянии.")

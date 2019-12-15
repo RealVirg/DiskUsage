@@ -33,7 +33,6 @@ class ElementsInCurrentDirectory:
             if re.match(r".*\.[a-z]{1,3}", el.name):
                 self.types[re.search(r"\.[a-z]{1,3}", el.name).group()] = []
         self.types[" "] = []
-        print(self.types)
         time.sleep(1)
         # self.el_list = [Element(el, self.current_position) for el in os.listdir(current_position)]
 
@@ -42,7 +41,7 @@ class ElementsInCurrentDirectory:
         while swapped:
             swapped = False
             for i in range(len(self.el_list) - 1):
-                if self.el_list[i].size_in_bytes > self.el_list[i + 1].size_in_bytes:
+                if self.el_list[i].size_in_bytes < self.el_list[i + 1].size_in_bytes:
                     self.el_list[i], self.el_list[i + 1] = self.el_list[i + 1], self.el_list[i]
                     swapped = True
 
@@ -51,7 +50,7 @@ class ElementsInCurrentDirectory:
         while swapped:
             swapped = False
             for i in range(len(self.el_list) - 1):
-                if self.el_list[i].date_modif > self.el_list[i + 1].date_modif:
+                if self.el_list[i].date_modif < self.el_list[i + 1].date_modif:
                     self.el_list[i], self.el_list[i + 1] = self.el_list[i + 1], self.el_list[i]
                     swapped = True
 
@@ -63,8 +62,6 @@ class ElementsInCurrentDirectory:
                 self.types[" "].append(el)
         self.el_list = []
         for key in self.types:
-            for el in self.types[key]:
-                print(key, el, sep=": ")
             self.el_list += self.types[key]
             self.types[key] = []
 
